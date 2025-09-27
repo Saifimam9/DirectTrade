@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Direct Trade — C2C Marketplace Prototype</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body style="margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:#f7f7fb;color:#111;">
+  <!-- Top Bar -->
+  <div style="background:#0f172a;color:#fff;padding:8px 16px;display:flex;gap:12px;justify-content:center;align-items:center;font-size:12px;">
+    <span>🇮🇳 Serving all over India • Buyer Protection Beta</span>
+  </div>
+  <!-- Header -->
+  <header style="position:sticky;top:0;background:#fff;border-bottom:1px solid #e5e7eb;z-index:50;">
+    <div class="header-container" style="max-width:1200px;margin:0 auto;padding:14px 16px;display:flex;align-items:center;gap:14px;">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <div style="width:36px;height:36px;border-radius:8px;background:#0ea5e9;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;">DT</div>
+        <a href="#" class="header-logo" style="text-decoration:none;color:#0f172a;font-weight:700;font-size:20px;">Direct<span style="color:#0ea5e9">Trade</span></a>
+      </div>
+      <!-- Search -->
+      <form onsubmit="event.preventDefault()" class="search-form" style="display:flex;align-items:center;gap:8px;flex:1;max-width:700px;margin-left:8px;">
+        <div style="flex:1;display:flex;align-items:center;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:10px;padding:8px 10px;">
+          <input id="searchInput" placeholder="Search phones, laptops, cycles…" style="border:none;outline:none;background:transparent;flex:1;font-size:14px;color:#0f172a;" />
+          <select id="location" class="location-select" style="border:none;outline:none;background:transparent;font-size:12px;color:#334155;padding:4px 6px;border-left:1px solid #e2e8f0;margin-left:8px;">
+            <option>All India</option>
+            <option>Delhi NCR</option>
+            <option>Mumbai</option>
+            <option>Bengaluru</option>
+            <option>Hyderabad</option>
+            <option>Kolkata</option>
+            <option>Chennai</option>
+          </select>
+        </div>
+        <button type="button" onclick="doSearch()" class="search-button" style="background:#0ea5e9;border:1px solid #0284c7;color:white;border-radius:10px;padding:10px 14px;font-weight:600;cursor:pointer;">Search</button>
+      </form>
+      <div class="header-buttons" style="display:flex;align-items:center;gap:10px;">
+        <button type="button" onclick="openSignInModal()" style="background:#fff;border:1px solid #e5e7eb;color:#0f172a;border-radius:10px;padding:10px 12px;font-weight:600;cursor:pointer;">Sign in</button>
+        <button type="button" onclick="openPostModal()" class="post-button" style="background:#22c55e;border:1px solid #16a34a;color:white;border-radius:10px;padding:10px 12px;font-weight:700;cursor:pointer;"><span>+ Post Ad</span></button>
+      </div>
+    </div>
+  </header>
+  <!-- Categories -->
+  <section style="max-width:1200px;margin:12px auto 0;padding:0 16px;">
+    <div style="display:flex;flex-wrap:wrap;gap:8px;">
+      <span style="font-weight:600;color:#0f172a;margin-right:4px;">Popular:</span>
+      <button class="chip" style="border:1px solid #e2e8f0;background:#fff;border-radius:999px;padding:8px 12px;font-size:12px;cursor:pointer;">Mobiles</button>
+      <button class="chip" style="border:1px solid #e2e8f0;background:#fff;border-radius:999px;padding:8px 12px;font-size:12px;cursor:pointer;">Laptops</button>
+      <button class="chip" style="border:1px solid #e2e8f0;background:#fff;border-radius:999px;padding:8px 12px;font-size:12px;cursor:pointer;">Bikes</button>
+      <button class="chip" style="border:1px solid #e2e8f0;background:#fff;border-radius:999px;padding:8px 12px;font-size:12px;cursor:pointer;">Furniture</button>
+      <button class="chip" style="border:1px solid #e2e8f0;background:#fff;border-radius:999px;padding:8px 12px;font-size:12px;cursor:pointer;">Collectibles</button>
+      <button class="chip" style="border:1px solid #e2e8f0;background:#fff;border-radius:999px;padding:8px 12px;font-size:12px;cursor:pointer;">Cameras</button>
+      <button class="chip" style="border:1px solid #e2e8f0;background:#fff;border-radius:999px;padding:8px 12px;font-size:12px;cursor:pointer;">Appliances</button>
+    </div>
+  </section>
+  <!-- Hero / CTA -->
+  <section style="max-width:1200px;margin:14px auto 0;padding:0 16px;">
+    <div style="border:1px solid #e5e7eb;border-radius:14px;background:linear-gradient(135deg,#eff6ff,#ecfeff);padding:18px;display:flex;gap:16px;align-items:center;">
+      <div style="flex:1;">
+        <h1 style="margin:0 0 6px 0;font-size:22px;">Buy & sell pre‑loved goods with trust</h1>
+        <p style="margin:0;color:#475569;font-size:14px;">Auctions • Fixed‑price • UPI payments • Escrow • Verified sellers</p>
+        <div style="margin-top:12px;display:flex;gap:8px;">
+          <button onclick="openPostModal()" style="background:#0ea5e9;border:1px solid #0284c7;color:#fff;border-radius:10px;padding:10px 14px;font-weight:700;cursor:pointer;">Start Selling</button>
+          <button onclick="scrollToListings()" style="background:#fff;border:1px solid #cbd5e1;color:#0f172a;border-radius:10px;padding:10px 14px;font-weight:600;cursor:pointer;">Browse Deals</button>
+        </div>
+      </div>
+      <div aria-hidden="true" style="width:280px;height:120px;border-radius:10px;background:repeating-linear-gradient(45deg,#c7d2fe,#c7d2fe 12px,#a5b4fc 12px,#a5b4fc 24px);"></div>
+    </div>
+  </section>
+  <!-- Filters -->
+  <section style="max-width:1200px;margin:14px auto 0;padding:0 16px;">
+    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+      <button onclick="toggleFilters()" style="background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:8px 10px;font-weight:600;cursor:pointer;">☰ Filters</button>
+      <div id="filters" style="display:none;gap:8px;align-items:center;flex-wrap:wrap;background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:10px;">
+        <label style="font-size:12px;color:#334155;">Price ₹ <input type="number" id="minp" placeholder="min" style="width:80px;border:1px solid #e2e8f0;border-radius:8px;padding:6px;"> – <input type="number" id="maxp" placeholder="max" style="width:80px;border:1px solid #e2e8f0;border-radius:8px;padding:6px;"></label>
+        <label style="font-size:12px;color:#334155;">Condition
+          <select id="cond" style="border:1px solid #e2e8f0;border-radius:8px;padding:6px;">
+            <option>Any</option>
+            <option>New</option>
+            <option>Like New</option>
+            <option>Good</option>
+            <option>Fair</option>
+          </select>
+        </label>
+        <label style="font-size:12px;color:#334155;">Type
+          <select id="type" style="border:1px solid #e2e8f0;border-radius:8px;padding:6px;">
+            <option>Any</option>
+            <option>Buy Now</option>
+            <option>Auction</option>
+          </select>
+        </label>
+        <button onclick="applyFilters()" style="background:#0ea5e9;border:1px solid #0284c7;color:#fff;border-radius:10px;padding:8px 12px;font-weight:700;cursor:pointer;">Apply</button>
+      </div>
+    </div>
+  </section>
+  <!-- Listings Grid -->
+  <main id="listings" style="max-width:1200px;margin:12px auto 28px;padding:0 16px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin:8px 0 6px 0;flex-wrap:wrap;gap:10px;">
+      <h2 style="margin:0;font-size:18px;">Featured Listings</h2>
+      <select id="sort" onchange="renderCards()" style="border:1px solid #e2e8f0;border-radius:8px;padding:6px 8px;font-size:12px;min-width:150px;">
+        <option value="latest">Latest</option>
+        <option value="price_low">Price: Low to High</option>
+        <option value="price_high">Price: High to Low</option>
+      </select>
+    </div>
+    <div id="grid" class="product-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;">
+      <!-- Cards injected by JS -->
+    </div>
+    <div style="display:flex;justify-content:center;margin-top:16px;">
+      <button onclick="loadMore()" style="background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:10px 14px;font-weight:600;cursor:pointer;">Load more</button>
+    </div>
+  </main>
+  <!-- Post Ad Modal -->
+  <div id="postModal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(15,23,42,0.5);z-index:1000;">
+    <div style="position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:90%;max-width:420px;background:#fff;border-radius:12px;box-shadow:0 20px 25px -5px rgba(0,0,0,0.1),0 8px 10px -6px rgba(0,0,0,0.1);overflow:hidden;">
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px solid #e5e7eb;background:#fff;">
+        <strong style="font-size:15px;color:#0f172a;">Post a new ad</strong>
+        <button onclick="closePostModal()" style="background:#f1f5f9;border:1px solid #e2e8f0;border-radius:6px;padding:6px 10px;cursor:pointer;color:#64748b;font-size:14px;line-height:1;">✕</button>
+      </div>
+      <form onsubmit="event.preventDefault();saveAd();" style="padding:16px;display:grid;gap:12px;">
+        <!-- Image Upload Preview -->
+        <div style="border:1px dashed #cbd5e1;border-radius:8px;padding:16px;text-align:center;cursor:pointer;background:#f8fafc;transition:all 0.2s;" 
+             onclick="document.getElementById('f_image').click()" 
+             id="imageDropzone"
+             onmouseover="this.style.borderColor='#0ea5e9';this.style.background='#f0f9ff';"
+             onmouseout="this.style.borderColor='#cbd5e1';this.style.background='#f8fafc';">
+          <input type="file" id="f_image" accept="image/*" style="display:none;" onchange="previewImage(event)" required />
+          <div id="imagePreview" style="display:none;margin-bottom:8px;">
+            <img id="preview" style="max-width:100%;max-height:160px;border-radius:8px;" />
+          </div>
+          <div id="uploadPrompt">
+            <div style="font-size:20px;color:#94a3b8;margin-bottom:6px;">📸</div>
+            <div style="font-weight:600;color:#0f172a;margin-bottom:2px;font-size:14px;">Click or drag to add photo</div>
+            <div style="font-size:12px;color:#64748b;">Required • JPEG, PNG • Max 5MB</div>
+          </div>
+        </div>
+        <!-- Random or Custom Toggle -->
+        <div style="display:flex;gap:6px;">
+          <button type="button" onclick="togglePostMode('custom')" id="customBtn" 
+                  style="flex:1;background:#fff;border:1px solid #e2e8f0;color:#0f172a;border-radius:8px;padding:8px;font-weight:600;cursor:pointer;font-size:13px;">
+            Custom Post
+          </button>
+          <button type="button" onclick="togglePostMode('random')" id="randomBtn"
+                  style="flex:1;background:#fff;border:1px solid #e2e8f0;color:#0f172a;border-radius:8px;padding:8px;font-weight:600;cursor:pointer;font-size:13px;">
+            Random Category
+          </button>
+        </div>
+        <!-- Random Category Name Input -->
+        <div id="randomFields" style="display:none;margin-top:8px;">
+          <input id="f_random_name" placeholder="Name" style="width:100%;border:1px solid #e2e8f0;border-radius:8px;padding:8px;font-size:13px;" />
+        </div>
+        <div id="customFields" style="display:grid;gap:8px;">
+          <input id="f_title" placeholder="Title" style="width:100%;border:1px solid #e2e8f0;border-radius:8px;padding:8px;font-size:13px;" />
+          <textarea id="f_desc" placeholder="Description" rows="2" style="width:100%;border:1px solid #e2e8f0;border-radius:8px;padding:8px;resize:vertical;font-size:13px;min-height:50px;"></textarea>
+          <div style="display:flex;gap:6px;">
+            <input id="f_price" type="number" placeholder="Price ₹" style="flex:1;border:1px solid #e2e8f0;border-radius:8px;padding:8px;font-size:13px;" />
+            <select id="f_type" style="flex:1;border:1px solid #e2e8f0;border-radius:8px;padding:8px;font-size:13px;">
+              <option value="random">Type</option>
+              <option>Buy Now</option>
+              <option>Auction</option>
+            </select>
+          </div>
+          <div style="display:flex;gap:6px;">
+            <select id="f_cond" style="flex:1;border:1px solid #e2e8f0;border-radius:8px;padding:8px;font-size:13px;">
+              <option value="random">Condition</option>
+              <option>Like New</option>
+              <option>New</option>
+              <option>Good</option>
+              <option>Fair</option>
+            </select>
+            <select id="f_city" style="flex:1;border:1px solid #e2e8f0;border-radius:8px;padding:8px;font-size:13px;">
+              <option value="random">City</option>
+              <option>Delhi</option>
+              <option>Mumbai</option>
+              <option>Bengaluru</option>
+              <option>Hyderabad</option>
+              <option>Chennai</option>
+              <option>Kolkata</option>
+              <option>Pune</option>
+            </select>
+          </div>
+        </div>
+        <button type="submit" style="background:#22c55e;border:1px solid #16a34a;color:#fff;border-radius:8px;padding:10px;font-weight:600;cursor:pointer;font-size:14px;transition:all 0.2s;" onmouseover="this.style.background='#16a34a'" onmouseout="this.style.background='#22c55e'">
+          Post Item
+        </button>
+      </form>
+    </div>
+  </div>
+      </form>
+    </div>
+  </div>
+  <!-- Sign In Modal -->
+  <div id="signInModal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(15,23,42,0.5);z-index:1000;">
+    <div style="position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:90%;max-width:400px;background:#fff;border-radius:16px;box-shadow:0 20px 25px -5px rgba(0,0,0,0.1),0 8px 10px -6px rgba(0,0,0,0.1);overflow:hidden;">
+      <!-- Header -->
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:20px 24px;border-bottom:1px solid #e5e7eb;background:linear-gradient(to right, #0ea5e9, #0284c7);">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div style="width:40px;height:40px;border-radius:10px;background:rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;">
+            <div style="color:#fff;font-weight:700;font-size:18px;">DT</div>
+          </div>
+          <div style="display:flex;flex-direction:column;">
+            <strong style="font-size:18px;color:#fff;">Welcome Back</strong>
+            <span style="font-size:13px;color:rgba(255,255,255,0.8);">Sign in to your account</span>
+          </div>
+        </div>
+        <button onclick="closeSignInModal()" style="background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);border-radius:8px;padding:8px 12px;cursor:pointer;color:#fff;font-size:14px;line-height:1;transition:all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.2)'" onmouseout="this.style.background='rgba(255,255,255,0.1)'">✕</button>
+      </div>
+      <!-- Form -->
+      <form onsubmit="event.preventDefault();handleSignIn();" style="padding:24px;">
+        <div style="margin-bottom:20px;">
+          <label style="font-size:14px;font-weight:600;display:block;margin-bottom:8px;color:#0f172a;">Email address</label>
+          <input type="email" id="signInEmail" placeholder="e.g., john@example.com" required 
+                 style="width:100%;padding:12px 16px;border:1px solid #cbd5e1;border-radius:12px;font-size:15px;outline:none;transition:all 0.2s;background-color:#fff;"
+                 onmouseover="this.style.borderColor='#94a3b8'" 
+                 onmouseout="this.style.borderColor='#cbd5e1'"
+                 onfocus="this.style.borderColor='#0ea5e9';this.style.boxShadow='0 0 0 3px rgba(14,165,233,0.1)'"
+                 onblur="this.style.borderColor='#cbd5e1';this.style.boxShadow='none'" />
+        </div>
+        <div style="margin-bottom:24px;">
+          <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
+            <label style="font-size:14px;font-weight:600;color:#0f172a;">Password</label>
+            <a href="#" style="font-size:13px;color:#0ea5e9;text-decoration:none;font-weight:500;transition:all 0.2s;" onmouseover="this.style.color='#0284c7'" onmouseout="this.style.color='#0ea5e9'">Forgot password?</a>
+          </div>
+          <input type="password" id="signInPassword" placeholder="Enter your password" required 
+                 style="width:100%;padding:12px 16px;border:2px solid #e2e8f0;border-radius:12px;font-size:15px;outline:none;transition:all 0.2s;"
+                 onmouseover="this.style.borderColor='#cbd5e1'" 
+                 onmouseout="this.style.borderColor='#e2e8f0'"
+                 onfocus="this.style.borderColor='#0ea5e9';this.style.boxShadow='0 0 0 3px rgba(14,165,233,0.1)'"
+                 onblur="this.style.borderColor='#e2e8f0';this.style.boxShadow='none'" />
+        </div>
+        <button type="submit" 
+                style="width:100%;background:linear-gradient(to right, #0ea5e9, #0284c7);border:none;color:#fff;border-radius:12px;padding:14px;font-weight:600;cursor:pointer;font-size:16px;transition:all 0.2s;position:relative;overflow:hidden;"
+                onmouseover="this.style.transform='translateY(-1px)';this.style.boxShadow='0 4px 12px rgba(14,165,233,0.25)'" 
+                onmouseout="this.style.transform='none';this.style.boxShadow='none'">
+          Sign in to account
+        </button>
+        <div style="text-align:center;font-size:14px;margin-top:20px;color:#475569;">
+          Don't have an account? 
+          <a href="#" onclick="switchToSignUp();return false;" 
+             style="color:#0ea5e9;text-decoration:none;font-weight:500;position:relative;display:inline-block;margin-left:4px;transition:all 0.2s;"
+             onmouseover="this.style.color='#0284c7'" 
+             onmouseout="this.style.color='#0ea5e9'">
+            Create account
+          </a>
+        </div>
+      </form>
+    </div>
+  </div>
+  <!-- Chat Modal -->
+  <div id="chatModal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(15,23,42,0.5);z-index:1000;">
+    <div class="modal-content" style="position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:90%;max-width:800px;height:90vh;max-height:800px;background:#fff;border-radius:12px;box-shadow:0 20px 25px -5px rgba(0,0,0,0.1),0 8px 10px -6px rgba(0,0,0,0.1);overflow:hidden;">
+      <div style="height:100%;display:flex;">
+        <!-- Product Info -->
+        <div class="chat-product-info" style="flex:1;padding:20px;background:white;border-right:1px solid #e5e7eb;overflow-y:auto;">
+          <h2 style="margin-bottom:15px;color:#0f172a;">Product Details</h2>
+          <img id="chatProductImage" src="" alt="Product Image" style="width:100%;max-width:300px;border-radius:10px;margin-bottom:20px;object-fit:cover;">
+          <p><strong>Name:</strong> <span id="chatProductName"></span></p>
+          <p><strong>Price:</strong> ₹<span id="chatProductPrice"></span></p>
+          <p><strong>Category:</strong> <span id="chatProductCategory"></span></p>
+          <p><strong>Description:</strong> <span id="chatProductDesc"></span></p>
+        </div>
+        <!-- Chat Area -->
+        <div style="flex:1.2;display:flex;flex-direction:column;background:#f1f5f9;">
+          <div style="padding:15px;background:#0ea5e9;color:white;font-weight:bold;display:flex;justify-content:space-between;align-items:center;">
+            <span>Chat with Seller</span>
+            <button onclick="closeChatModal()" style="background:transparent;border:none;color:white;cursor:pointer;font-size:18px;">✕</button>
+          </div>
+          <div id="chat-box" style="flex:1;padding:15px;overflow-y:auto;">
+            <div style="margin-bottom:10px;">
+              <div style="background:white;padding:10px 15px;border-radius:15px;display:inline-block;max-width:70%;">
+                Hi, is this product still available?
+              </div>
+            </div>
+            <div style="margin-bottom:10px;text-align:right;">
+              <div style="background:#0ea5e9;color:white;padding:10px 15px;border-radius:15px;display:inline-block;max-width:70%;">
+                Yes, it's available! Do you want to place an order?
+              </div>
+            </div>
+          </div>
+          <div style="padding:10px;display:flex;border-top:1px solid #ccc;background:white;">
+            <input type="text" id="chatInput" placeholder="Type a message..." 
+                   style="flex:1;padding:10px;border:1px solid #ccc;border-radius:20px;outline:none;">
+            <button onclick="sendMessage()" style="margin-left:10px;padding:10px 20px;background:#0ea5e9;color:white;border:none;border-radius:20px;cursor:pointer;font-weight:bold;">
+              Send
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Product Modal -->
+  <div id="productModal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(15,23,42,0.5);z-index:1000;">
+    <div class="modal-content" style="position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:95%;max-width:1000px;max-height:90vh;background:#fff;border-radius:12px;box-shadow:0 20px 25px -5px rgba(0,0,0,0.1),0 8px 10px -6px rgba(0,0,0,0.1);overflow-y:auto;">
+      <div style="padding:20px;">
+        <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:20px;flex-wrap:wrap;gap:10px;">
+          <h1 style="margin:0;font-size:clamp(18px, 4vw, 22px);font-weight:600;" id="modalProductTitle"></h1>
+          <button onclick="closeProductModal()" style="background:#f1f5f9;border:1px solid #e2e8f0;border-radius:6px;padding:6px 10px;cursor:pointer;color:#64748b;font-size:14px;line-height:1;">✕</button>
+        </div>
+        <div style="display:flex;gap:20px;flex-wrap:wrap;">
+          <!-- Product Image -->
+          <div style="flex:1;min-width:300px;max-width:500px;">
+            <img id="modalProductImage" src="" alt="Product" style="width:100%;border-radius:12px;border:1px solid #e5e7eb;">
+          </div>
+          <!-- Product Info -->
+          <div style="flex:1;min-width:300px;display:flex;flex-direction:column;gap:14px;">
+            <p style="margin:0;color:#475569;font-size:14px;">Seller: <strong>Verified Seller</strong> • Location: <span id="modalProductLocation"></span></p>
+            <h2 style="margin:0;color:#0ea5e9;font-size:24px;">₹<span id="modalProductPrice"></span></h2>
+            <p style="margin:0;color:#475569;" id="modalProductDesc"></p>
+            <div style="display:flex;gap:10px;margin-top:14px;">
+              <button onclick="openChatFromProduct()" style="flex:1;background:#0ea5e9;border:1px solid #0284c7;color:white;border-radius:10px;padding:12px;font-weight:700;cursor:pointer;">💬 Chat with Seller</button>
+              <button style="flex:1;background:#fff;border:1px solid #cbd5e1;color:#0f172a;border-radius:10px;padding:12px;font-weight:600;cursor:pointer;">♡ Wishlist</button>
+            </div>
+          </div>
+        </div>
+        <!-- Similar Products -->
+        <section style="margin-top:30px;">
+          <h2 style="font-size:18px;margin:0 0 12px 0;">Similar Products</h2>
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px;" id="similarProducts">
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+  <!-- Sign Up Modal -->
+  <div id="signUpModal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(15,23,42,0.5);z-index:1000;">
+    <div style="position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:90%;max-width:420px;background:#fff;border-radius:16px;box-shadow:0 20px 25px -5px rgba(0,0,0,0.1),0 8px 10px -6px rgba(0,0,0,0.1);overflow:hidden;">
+      <!-- Header -->
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:20px 24px;border-bottom:1px solid #e5e7eb;background:linear-gradient(to right, #22c55e, #16a34a);">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div style="width:40px;height:40px;border-radius:10px;background:rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;">
+            <div style="color:#fff;font-weight:700;font-size:18px;">DT</div>
+          </div>
+          <div style="display:flex;flex-direction:column;">
+            <strong style="font-size:18px;color:#fff;">Create Account</strong>
+            <span style="font-size:13px;color:rgba(255,255,255,0.8);">Join Direct Trade today</span>
+          </div>
+        </div>
+        <button onclick="closeSignUpModal()" 
+                style="background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);border-radius:8px;padding:8px 12px;cursor:pointer;color:#fff;font-size:14px;line-height:1;transition:all 0.2s;" 
+                onmouseover="this.style.background='rgba(255,255,255,0.2)'" 
+                onmouseout="this.style.background='rgba(255,255,255,0.1)'">✕</button>
+      </div>
+      <!-- Form -->
+      <form onsubmit="event.preventDefault();handleSignUp();" style="padding:24px;">
+        <div style="margin-bottom:20px;">
+          <label style="font-size:14px;font-weight:600;display:block;margin-bottom:8px;color:#0f172a;">Full Name</label>
+          <input type="text" id="signUpName" placeholder="e.g., John Smith" required 
+                 style="width:100%;padding:12px 16px;border:1px solid #cbd5e1;border-radius:12px;font-size:15px;outline:none;transition:all 0.2s;background-color:#fff;"
+                 onmouseover="this.style.borderColor='#94a3b8'" 
+                 onmouseout="this.style.borderColor='#cbd5e1'"
+                 onfocus="this.style.borderColor='#22c55e';this.style.boxShadow='0 0 0 3px rgba(34,197,94,0.1)'"
+                 onblur="this.style.borderColor='#cbd5e1';this.style.boxShadow='none'" />
+        </div>
+        <div style="margin-bottom:20px;">
+          <label style="font-size:14px;font-weight:600;display:block;margin-bottom:8px;color:#0f172a;">Email address</label>
+          <input type="email" id="signUpEmail" placeholder="e.g., john@example.com" required 
+                 style="width:100%;padding:12px 16px;border:1px solid #cbd5e1;border-radius:12px;font-size:15px;outline:none;transition:all 0.2s;background-color:#fff;"
+                 onmouseover="this.style.borderColor='#94a3b8'" 
+                 onmouseout="this.style.borderColor='#cbd5e1'"
+                 onfocus="this.style.borderColor='#22c55e';this.style.boxShadow='0 0 0 3px rgba(34,197,94,0.1)'"
+                 onblur="this.style.borderColor='#cbd5e1';this.style.boxShadow='none'" />
+        </div>
+        <div style="margin-bottom:24px;">
+          <label style="font-size:14px;font-weight:600;display:block;margin-bottom:8px;color:#0f172a;">Create password</label>
+          <input type="password" id="signUpPassword" placeholder="Enter a strong password" required 
+                 style="width:100%;padding:12px 16px;border:1px solid #cbd5e1;border-radius:12px;font-size:15px;outline:none;transition:all 0.2s;background-color:#fff;"
+                 onmouseover="this.style.borderColor='#cbd5e1'" 
+                 onmouseout="this.style.borderColor='#e2e8f0'"
+                 onfocus="this.style.borderColor='#22c55e';this.style.boxShadow='0 0 0 3px rgba(34,197,94,0.1)'"
+                 onblur="this.style.borderColor='#e2e8f0';this.style.boxShadow='none'" />
+          <p style="margin:8px 0 0 0;font-size:13px;color:#64748b;">Password must be at least 8 characters long</p>
+        </div>
+        <button type="submit" 
+                style="width:100%;background:linear-gradient(to right, #22c55e, #16a34a);border:none;color:#fff;border-radius:12px;padding:14px;font-weight:600;cursor:pointer;font-size:16px;transition:all 0.2s;position:relative;overflow:hidden;"
+                onmouseover="this.style.transform='translateY(-1px)';this.style.boxShadow='0 4px 12px rgba(34,197,94,0.25)'" 
+                onmouseout="this.style.transform='none';this.style.boxShadow='none'">
+          Create account
+        </button>
+        <div style="text-align:center;font-size:14px;margin-top:20px;color:#475569;">
+          Already have an account? 
+          <a href="#" onclick="switchToSignIn();return false;" 
+             style="color:#22c55e;text-decoration:none;font-weight:500;position:relative;display:inline-block;margin-left:4px;transition:all 0.2s;"
+             onmouseover="this.style.color='#16a34a'" 
+             onmouseout="this.style.color='#22c55e'">
+            Sign in
+          </a>
+        </div>
+      </form>
+    </div>
+  </div>
+  <!-- Footer -->
+  <footer style="border-top:1px solid #e5e7eb;background:#fff;margin-top:24px;">
+    <div style="max-width:1200px;margin:0 auto;padding:18px 16px;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;">
+      <div>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+          <div style="width:28px;height:28px;border-radius:8px;background:#0ea5e9;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:12px;">DT</div>
+          <strong>Majid d</strong>
+        </div>
+        <p style="margin:0;color:#475569;font-size:13px;">Prototype UI for an India‑first C2C marketplace.</p>
+      </div>
+      <div>
+        <strong style="font-size:14px;">Company</strong>
+        <ul style="list-style:none;padding:0;margin:8px 0 0 0;color:#475569;font-size:13px;display:grid;gap:6px;">
+          <li><a href="#" style="color:inherit;text-decoration:none;">About</a></li>
+          <li><a href="#" style="color:inherit;text-decoration:none;">Careers</a></li>
+          <li><a href="#" style="color:inherit;text-decoration:none;">Press</a></li>
+        </ul>
+      </div>
+      <div>
+        <strong style="font-size:14px;">Help</strong>
+        <ul style="list-style:none;padding:0;margin:8px 0 0 0;color:#475569;font-size:13px;display:grid;gap:6px;">
+          <li><a href="#" style="color:inherit;text-decoration:none;">Buyer Protection</a></li>
+          <li><a href="#" style="color:inherit;text-decoration:none;">Safety Tips</a></li>
+          <li><a href="#" style="color:inherit;text-decoration:none;">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <strong style="font-size:14px;">Legal</strong>
+        <ul style="list-style:none;padding:0;margin:8px 0 0 0;color:#475569;font-size:13px;display:grid;gap:6px;">
+          <li><a href="#" style="color:inherit;text-decoration:none;">Terms</a></li>
+          <li><a href="#" style="color:inherit;text-decoration:none;">Privacy</a></li>
+          <li><a href="#" style="color:inherit;text-decoration:none;">Returns</a></li>
+        </ul>
+      </div>
+    </div>
+    <div style="border-top:1px solid #e5e7eb;padding:10px 16px;text-align:center;color:#64748b;font-size:12px;">© 2025 Direct Trade • Prototype</div>
+  </footer>
+</body>
+  <script src="script.js"></script>
+</html>
